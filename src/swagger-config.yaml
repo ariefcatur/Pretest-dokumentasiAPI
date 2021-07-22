@@ -1,0 +1,365 @@
+openapi: "3.0.0"
+info:
+  version: "v1"
+  title: "Pretest Dokumentasi API"
+  description: "Ini adalah pretest"
+servers:
+  - url: "http://pretest-qa.dcidev.id/documentation/v1#/"
+
+host: "http://pretest-qa.dcidev.id/documentation/v1#/"
+
+tags:
+  - name: "Message"
+    description: "Operation about message"
+  - name: "notification"
+    description: "Operation about notification"
+  - name: "oauth"
+    description: "Operation about oauth"
+  - name: "profile"
+    description: "Operation about profile"
+  - name: "register"
+    description: "Operation about register"
+  - name: "uploads"
+    description: "Operation about uploads"
+
+paths:
+  /api/v1/message/{user_id}:
+    get:
+      tags:
+        - "Message"
+      description: "Get Message"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "Authorization"
+          description: "Access Token"
+          in: "header"
+          type: "string"
+        - name: "user_id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        401:
+          description: "Unauthorized"
+        200:
+          description: "Get message"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /api/v1/message/send:  
+    post:
+      tags:
+        - "Message"
+      description: "Send Message"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "Authorization"
+          description: "Access Token"
+          in: "header"
+          type: "string"
+        - name: "user_id"
+          type: "string"
+          in: "formData"
+        - name: "message"
+          type: "string"
+          in: "formData"
+      responses:
+        401:
+          description: "Unauthorized"
+        201:
+          description: "Send message"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /api/v1/notification/{grub_id}/{token}:
+    post:
+      tags:
+        - "notification"
+      description: "cek app version"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "grub_id"
+          in: "path"
+          type: "integer"
+          format: "int64"
+        - name: "token"
+          in: "path"
+          type: "integer"
+          format: "int64"
+      responses:
+        401:
+          description: "Unauthorized"
+        201:
+          description: "cek app version"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /api/v1/oauth/credentials:
+    get:
+      tags:
+        - "oauth"
+      description: "Get credentials"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "access_token"
+          in: "query"
+          type: "string"
+      responses:
+        401:
+          description: "Unauthorized"
+        200:
+          description: "Get Credentials"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /api/v1/oauth/sign_in:
+    post:
+      tags:
+        - "oauth"
+      description: "Login user"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "phone"
+          in: "formData"
+          type: "string"
+        - name: "password"
+          in: "formData"
+          type: "string"
+        - name: "latlong"
+          in: "formData"
+          type: "string"
+        - name: "device_token"
+          in: "formData"
+          type: "string"
+        - name: "device_type"
+          in: "formData"
+          description: "{ios: 0, android: 1, web: 2}"
+          type: "integer"
+          maximum: 2.0
+          minimum: 0.0
+          format: "int64"
+      responses:
+        401:
+          description: "Unauthorized"
+        201:
+          description: "Login user"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /api/v1/oauth/revoke:
+    post:
+      tags:
+        - "oauth"
+      description: "Logging out user and revoke token"
+      produces:
+        - "application/json"
+      parameters: 
+        - name: "access_token"
+          description: "Your token"
+          in: "formData"
+          type: "string"
+        - name: "confirm"
+          in: "formData"
+          description: "Confirm"
+          type: "integer"
+          format: "int64"
+      responses:
+        401:
+          description: "Unauthorized"
+        201:
+          description: "Logging out user and revoke token."
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /api/v1/profile/career:
+    post:
+      tags:
+        - "profile"
+      description: "Update career user"
+      parameters:
+        - name: "Authorization"
+          description: "Access Token"
+          in: "header"
+          type: "string"
+        - name: "position"
+          in: "formData"
+          type: "string"
+        - name: "company_name"
+          in: "formData"
+          type: "string"
+        - name: "starting_from"
+          in: "formData"
+          type: "date"
+        - name: "ending_in"
+          in: "formData"
+          type: "date"
+      responses:
+        401:
+          description: "Unauthorized"
+        201:
+          description: "Update career user"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /api/v1/profile/education:
+    post:
+      tags:
+        - "profile"
+      description: "Update education user"
+      parameters:
+        - name: "Authorization"
+          description: "Access Token"
+          in: "header"
+          type: "string"
+        - name: "school_name"
+          in: "formData"
+          type: "string"
+        - name: "graduation_time"
+          in: "formData"
+          type: "date"
+      responses:
+        401:
+          description: "Unauthorized"
+        201:
+          description: "Update Education user"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+  /api/v1/profile:
+    post:
+      tags:
+        - "profile"
+      description: "Update profile user"
+      parameters:
+        - name: "Authorization"
+          description: "Access Token"
+          in: "header"
+          type: "string"
+        - name: "name"
+          in: "formData"
+          type: "string"
+        - name: "gender"
+          in: "formData"
+          description: "{male: 0, female: 1}"
+          type: "integer"
+          maximum: 1.0
+          minimum: 0.0
+          format: "int64"
+        - name: "birthday"
+          in: "formData"
+          type: "date"
+        - name: "hometown"
+          in: "formData"
+          type: "string"
+        - name: "bio"
+          in: "formData"
+          type: "string"
+      responses:
+        401:
+          description: "Unauthorized"
+        201:
+          description: "Update Profile use"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+    /api/v1/profile/me:
+      get:
+        tags:
+        - "profile"
+      description: "Get Current User"
+      parameters:
+        - name: "Authorization"
+          description: "Access Token"
+          in: "header"
+          type: "string"
+      responses:
+        401:
+          description: "Unauthorized"
+        200:
+          description: "Get Current User"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+    /api/v1/register/remove:
+      post:
+        tags:
+        - "register"
+      description: "Remove Account"
+      parameters:
+        - name: "phone"
+          in: "formData"
+          type: "string"
+      responses:
+        401:
+          description: "Undefined"
+        201:
+          description: "Remove Account"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+    /api/v1/register/otp/request:
+      post:
+        tags:
+        - "register"
+      description: "Resend Otp"
+      parameters:
+        - name: "phone"
+          in: "formData"
+          type: "string"
+      responses:
+        401:
+          description: "Undefined"
+        201:
+          description: "Resend Otp"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+    /api/v1/register/otp/match:
+      post:
+        tags:
+        - "register"
+      description: "Register matching otp code"
+      parameters:
+        - name: "user_id"
+          in: "formData"
+          type: "string"
+        - name: "otp_code"
+          in: "formData"
+          type: "string"
+      responses:
+        401:
+          description: "Undefined"
+        201:
+          description: "Register matching otp code"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+    /api/v1/register:
+      post:
+        tags:
+        - "register"
+      description: "Register User By Phone"
+      parameters:
+        - name: "phone"
+          description:  "phone must with countri code 62xxx"
+          in: "formData"
+          type: "string"
+        - name: "password"
+          in: "formData"
+          type: "string"
+        - name: "country"
+          in: "formData"
+          type: "string"
+        - name: "latlong"
+          in: "formData"
+          type: "string"
+        - name: "device_token"
+          in: "formData"
+          type: "string"
+        - name: "device_type"
+          in: "formData"
+          description: "{ios: 0, android: 1, web: 2}"
+          type: "integer"
+          maximum: 2.0
+          minimum: 0.0
+          format: "int64"
+      responses:
+        401:
+          description: "Undefined"
+        201:
+          description: "Register User By Phone"
+          schema:
+            $ref: "#/definitions/ApiResponse"
